@@ -82,6 +82,8 @@ DTact[, {
                       color="red", linetype="dashed", size=1)
   m <- m + geom_vline(aes(xintercept=median(Total, na.rm=TRUE)),
                       color="blue", linetype="dashed", size=1)
+  m <- m + xlab("Daily Activity (Steps)") + ylab("Density") + 
+          ggtitle("Variation in Daily Activity Levels")
   
 }]
 ```
@@ -108,6 +110,8 @@ DTint[, {
   t <- ggplot(.SD, aes(interval, interMean))
   t <- t + geom_line()
   t <- t + geom_smooth()
+  t <- t + xlab("Interval") + ylab("Avg. Activity Level (Steps)") + 
+          ggtitle("Daily Activity Pattern (Average)")
 }]
 ```
 
@@ -193,6 +197,8 @@ DTact[, {
                       color="red", linetype="dashed", size=1)
   m <- m + geom_vline(aes(xintercept=median(Total, na.rm=TRUE)),
                       color="blue", linetype="dashed", size=1)
+  m <- m + xlab("Daily Activity (Steps)") + ylab("Density") + 
+          ggtitle("Variation in Daily Activity Levels")
   
 }]
 ```
@@ -265,6 +271,8 @@ DTwee[, {
   t <- t + geom_line()
   t <- t + geom_smooth()
   t <- t + facet_grid(day ~ .)
+  t <- t + ylab("Activity Level (Steps)") + 
+          ggtitle("Activity Levels: Weekday v Weekend")
 }]
 ```
 
@@ -317,6 +325,8 @@ DTact[, lapply(.SD, class)]
 DTact[, {
   p <- ggplot(.SD, aes(x=day, y=Total, fill=factor(day)))
   p <- p + geom_boxplot() + geom_smooth(method="lm")
+  p <- p + ylab("Activity Level (Steps)") + 
+          ggtitle("Activity Level: Weekday v Weekend")
 }] 
 ```
 
