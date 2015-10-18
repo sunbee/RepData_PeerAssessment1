@@ -1,6 +1,17 @@
-# Reproducible Research: Peer Assessment 1
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
 
 ## Loading and preprocessing the data
+
+Set global options.
+
+```r
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, fig.height=6, fig.width=6)
+```
 
 Download the file using the specified link and unzip in the working directory.  
 
@@ -75,11 +86,7 @@ DTact[, {
 }]
 ```
 
-```
-## Warning: Removed 2304 rows containing non-finite values (stat_density).
-```
-
-![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
 
 The mean and median are shown on the histogram.
 
@@ -104,11 +111,7 @@ DTint[, {
 }]
 ```
 
-```
-## geom_smooth: method="auto" and size of largest group is <1000, so using loess. Use 'method = x' to change the smoothing method.
-```
-
-![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
 
 The time-series reaffirm noisy data. 
 
@@ -194,7 +197,7 @@ DTact[, {
 }]
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
+![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13-1.png) 
 
 ```r
 DTact[, summary(Total)]
@@ -265,12 +268,7 @@ DTwee[, {
 }]
 ```
 
-```
-## geom_smooth: method="auto" and size of largest group is <1000, so using loess. Use 'method = x' to change the smoothing method.
-## geom_smooth: method="auto" and size of largest group is <1000, so using loess. Use 'method = x' to change the smoothing method.
-```
-
-![](PA1_template_files/figure-html/unnamed-chunk-14-1.png) 
+![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png) 
 
 The plot shows difference in daily activity between weekday and weekend. We can fit a regression model to examine the assocation between day of the week and activity level. A regression model can show statistically significant differences from day to day.
 
@@ -322,11 +320,7 @@ DTact[, {
 }] 
 ```
 
-```
-## geom_smooth: Only one unique x value each group.Maybe you want aes(group = 1)?
-```
-
-![](PA1_template_files/figure-html/unnamed-chunk-16-1.png) 
+![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17-1.png) 
 
 ## Conclusion
 

@@ -7,6 +7,12 @@ output:
 
 ## Loading and preprocessing the data
 
+Set global options.
+```{r}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, fig.height=6, fig.width=6)
+
+```
+
 Download the file using the specified link and unzip in the working directory.  
 
 ```{r eval=FALSE}
