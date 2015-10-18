@@ -189,7 +189,7 @@ This  model shows that daily activity on a weekend is higher than the activity o
 DTact[, lapply(.SD, class)]
 DTact[, {
   p <- ggplot(.SD, aes(x=day, y=Total, fill=factor(day)))
-  p <- p + geom_boxplot()
+  p <- p + geom_boxplot() + geom_smooth(method="lm")
 }] 
 ```
 

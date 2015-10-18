@@ -318,8 +318,12 @@ DTact[, lapply(.SD, class)]
 ```r
 DTact[, {
   p <- ggplot(.SD, aes(x=day, y=Total, fill=factor(day)))
-  p <- p + geom_boxplot()
+  p <- p + geom_boxplot() + geom_smooth(method="lm")
 }] 
+```
+
+```
+## geom_smooth: Only one unique x value each group.Maybe you want aes(group = 1)?
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-16-1.png) 
