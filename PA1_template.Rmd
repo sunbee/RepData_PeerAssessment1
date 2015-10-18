@@ -174,7 +174,7 @@ DTwee[, {
 }]
 ```
 
-The plot shows difference in activity between weekday and weekend. We can fit a regression model to examine the assocation between day of the week and activity level. A regression model can show statistically significant differences from day to day.
+The plot shows difference in daily activity between weekday and weekend. We can fit a regression model to examine the assocation between day of the week and activity level. A regression model can show statistically significant differences from day to day.
 
 ```{r}
 wDay <- DTact[, {
@@ -183,9 +183,18 @@ wDay <- DTact[, {
 summary(wDay)
 ```
 
-This  model shows that activity on a weekend is higher than the activity on a weekday and the difference is statistically significant at 95% confidence level. 
+This  model shows that daily activity on a weekend is higher than the activity on a weekday and the difference is statistically significant at 95% confidence. The boxplot illustrates this result. 
+
+```{r}
+DTact[, lapply(.SD, class)]
+DTact[, {
+  p <- ggplot(.SD, aes(x=day, y=Total, fill=factor(day)))
+  p <- p + geom_boxplot()
+}] 
+```
 
 ## Conclusion
 
-Is the imputation correct?
-Noise in data. 
+Data are noisy with over 10% records missing values. The imputation approach produces a preponderance of zero values. A more sophisticated approach may need to be considered. 
+
+Regression shows that weekend affects the daily activity level and that the difference is statistically significant. It may be worthwhile looking closer at this association. A regression model with all 7 days of the week as the explanatory variables should be illuminatiing. 

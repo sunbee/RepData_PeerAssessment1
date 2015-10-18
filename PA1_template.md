@@ -272,7 +272,7 @@ DTwee[, {
 
 ![](PA1_template_files/figure-html/unnamed-chunk-14-1.png) 
 
-The plot shows difference in activity between weekday and weekend. We can fit a regression model to examine the assocation between day of the week and activity level. A regression model can show statistically significant differences from day to day.
+The plot shows difference in daily activity between weekday and weekend. We can fit a regression model to examine the assocation between day of the week and activity level. A regression model can show statistically significant differences from day to day.
 
 
 ```r
@@ -303,12 +303,29 @@ summary(wDay)
 ## F-statistic: 551.4 on 1 and 17566 DF,  p-value: < 2.2e-16
 ```
 
-This preliminary model shows that activity on a weekend is significantly higher than the activity on a weekday.
+This  model shows that daily activity on a weekend is higher than the activity on a weekday and the difference is statistically significant at 95% confidence. The boxplot illustrates this result. 
 
-The regression model reveals that the activity level on Friday is higher than that on any other weekday. We can infer this from the negative intercepts for Monday, Tuesday, Wednesday and Thursday. Further, this difference is statistically significant as seen from extremely small p-values.
 
-The model revels the level of activity on Saturday is slightly higher as compared to Friday, whereas Sunday is slightly lower. The difference is _not_ statistically significant at 95% confidence, as seen from p-values > 0.05. So one may infer that Friday, Saturday and Sunday are days of higher activity. 
+```r
+DTact[, lapply(.SD, class)]
+```
+
+```
+##      steps date interval   Total    day
+## 1: integer Date  integer integer factor
+```
+
+```r
+DTact[, {
+  p <- ggplot(.SD, aes(x=day, y=Total, fill=factor(day)))
+  p <- p + geom_boxplot()
+}] 
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-16-1.png) 
+
 ## Conclusion
 
-Is the imputation correct?
-Noise in data. 
+Data are noisy with over 10% records missing values. The imputation approach produces a preponderance of zero values. A more sophisticated approach may need to be considered. 
+
+Regression shows that weekend affects the daily activity level and that the difference is statistically significant. It may be worthwhile looking closer at this association. A regression model with all 7 days of the week as the explanatory variables should be illuminatiing. 
