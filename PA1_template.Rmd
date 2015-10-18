@@ -39,7 +39,7 @@ We are now all set to process data.
 ## What is mean total number of steps taken per day?
 
 Calculate the number of steps per day.
-```{r}
+```{r results='hide'}
 DTact[, Total := sum(steps), by=date]
 
 ```
@@ -55,6 +55,9 @@ DTact[, {
   m <- m + geom_density(fill="gray", alpha=0.2)
   m <- m + geom_vline(aes(xintercept=mean(Total, na.rm=TRUE)),
                       color="red", linetype="dashed", size=1)
+  m <- m + geom_vline(aes(xintercept=median(Total, na.rm=TRUE)),
+                      color="blue", linetype="dashed", size=1)
+  
 }]
 ```
 
@@ -119,9 +122,22 @@ DTact[, steps := vImpute(steps, interMedian)]
 DTact[, interMedian := NULL]
 ```
 
+Recompte totals with imputed values. Redo the histogram.
+
 ```{r}
-DTact
 DTact[, Total := sum(steps), by=date]
+DTact[, {
+  m <- ggplot(.SD, aes(x=Total))
+  m <- m + geom_histogram(aes(y=..density..), binwidth=3000, 
+                          color="black", fill="wheat", alpha=0.2) 
+  m <- m + geom_density(fill="gray", alpha=0.2)
+  m <- m + geom_vline(aes(xintercept=mean(Total, na.rm=TRUE)),
+                      color="red", linetype="dashed", size=1)
+  m <- m + geom_vline(aes(xintercept=median(Total, na.rm=TRUE)),
+                      color="blue", linetype="dashed", size=1)
+  
+}]
+
 DTact[, summary(Total)]
 ```
 
@@ -158,4 +174,18 @@ DTwee[, {
 }]
 ```
 
-The plot shows consistent activity over the weekend.
+The plot shows difference in activity between weekday and weekend. We can fit a regression model to examine the assocation between day of the week and activity level. A regression model can show statistically significant differences from day to day.
+
+```{r}
+wDay <- DTact[, {
+  lm(Total ~ day)         
+}]
+summary(wDay)
+```
+
+This  model shows that activity on a weekend is higher than the activity on a weekday and the difference is statistically significant at 95% confidence level. 
+
+## Conclusion
+
+Is the imputation correct?
+Noise in data. 

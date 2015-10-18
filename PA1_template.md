@@ -57,21 +57,6 @@ Calculate the number of steps per day.
 DTact[, Total := sum(steps), by=date]
 ```
 
-```
-##        steps       date interval Total
-##     1:    NA 2012-10-01        0    NA
-##     2:    NA 2012-10-01        5    NA
-##     3:    NA 2012-10-01       10    NA
-##     4:    NA 2012-10-01       15    NA
-##     5:    NA 2012-10-01       20    NA
-##    ---                                
-## 17564:    NA 2012-11-30     2335    NA
-## 17565:    NA 2012-11-30     2340    NA
-## 17566:    NA 2012-11-30     2345    NA
-## 17567:    NA 2012-11-30     2350    NA
-## 17568:    NA 2012-11-30     2355    NA
-```
-
 The histogram reveals the central tendency and spread.
 
 
@@ -84,6 +69,9 @@ DTact[, {
   m <- m + geom_density(fill="gray", alpha=0.2)
   m <- m + geom_vline(aes(xintercept=mean(Total, na.rm=TRUE)),
                       color="red", linetype="dashed", size=1)
+  m <- m + geom_vline(aes(xintercept=median(Total, na.rm=TRUE)),
+                      color="blue", linetype="dashed", size=1)
+  
 }]
 ```
 
@@ -170,25 +158,8 @@ DTact[, steps := vImpute(steps, interMedian)]
 DTact[, interMedian := NULL]
 ```
 
+Recompte totals with imputed values. Redo the histogram.
 
-```r
-DTact
-```
-
-```
-##        steps       date interval Total
-##     1:     0 2012-10-01        0    NA
-##     2:     0 2012-10-01        5    NA
-##     3:     0 2012-10-01       10    NA
-##     4:     0 2012-10-01       15    NA
-##     5:     0 2012-10-01       20    NA
-##    ---                                
-## 17564:     0 2012-11-30     2335    NA
-## 17565:     0 2012-11-30     2340    NA
-## 17566:     0 2012-11-30     2345    NA
-## 17567:     0 2012-11-30     2350    NA
-## 17568:     0 2012-11-30     2355    NA
-```
 
 ```r
 DTact[, Total := sum(steps), by=date]
@@ -208,6 +179,22 @@ DTact[, Total := sum(steps), by=date]
 ## 17567:     0 2012-11-30     2350  1141
 ## 17568:     0 2012-11-30     2355  1141
 ```
+
+```r
+DTact[, {
+  m <- ggplot(.SD, aes(x=Total))
+  m <- m + geom_histogram(aes(y=..density..), binwidth=3000, 
+                          color="black", fill="wheat", alpha=0.2) 
+  m <- m + geom_density(fill="gray", alpha=0.2)
+  m <- m + geom_vline(aes(xintercept=mean(Total, na.rm=TRUE)),
+                      color="red", linetype="dashed", size=1)
+  m <- m + geom_vline(aes(xintercept=median(Total, na.rm=TRUE)),
+                      color="blue", linetype="dashed", size=1)
+  
+}]
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
 
 ```r
 DTact[, summary(Total)]
@@ -285,4 +272,43 @@ DTwee[, {
 
 ![](PA1_template_files/figure-html/unnamed-chunk-14-1.png) 
 
-The plot shows consistent activity over the weekend.
+The plot shows difference in activity between weekday and weekend. We can fit a regression model to examine the assocation between day of the week and activity level. A regression model can show statistically significant differences from day to day.
+
+
+```r
+wDay <- DTact[, {
+  lm(Total ~ day)         
+}]
+summary(wDay)
+```
+
+```
+## 
+## Call:
+## lm(formula = Total ~ day)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -9857.4 -2194.5   927.5  3479.6 12221.5 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  8972.49      44.19  203.07   <2e-16 ***
+## dayweekend   2025.89      86.27   23.48   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 5030 on 17566 degrees of freedom
+## Multiple R-squared:  0.03043,	Adjusted R-squared:  0.03038 
+## F-statistic: 551.4 on 1 and 17566 DF,  p-value: < 2.2e-16
+```
+
+This preliminary model shows that activity on a weekend is significantly higher than the activity on a weekday.
+
+The regression model reveals that the activity level on Friday is higher than that on any other weekday. We can infer this from the negative intercepts for Monday, Tuesday, Wednesday and Thursday. Further, this difference is statistically significant as seen from extremely small p-values.
+
+The model revels the level of activity on Saturday is slightly higher as compared to Friday, whereas Sunday is slightly lower. The difference is _not_ statistically significant at 95% confidence, as seen from p-values > 0.05. So one may infer that Friday, Saturday and Sunday are days of higher activity. 
+## Conclusion
+
+Is the imputation correct?
+Noise in data. 
